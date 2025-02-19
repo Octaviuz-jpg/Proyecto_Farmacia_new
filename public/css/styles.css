@@ -1,0 +1,76 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+header .logo img {
+    height: 50px;
+}
+
+header .menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+header .menu ul li {
+    margin: 0 15px;
+}
+
+header .menu ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header .login a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header .login a img {
+    vertical-align: middle; /* Alinea la imagen con el texto */
+    margin-right: 5px; /* Espacio entre la imagen y el texto */
+    filter: brightness(0) invert(1);
+}
+
+/* Contenido Principal */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+main .imagen-central img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
