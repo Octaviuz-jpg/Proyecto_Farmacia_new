@@ -34,7 +34,7 @@ class Sucursal extends Model
        return $this->belongsTo(historial_rotacion::class,'historial_id');
     }
 
-    
-   
+
+
 
 }
