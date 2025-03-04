@@ -39,10 +39,12 @@ class Cargo extends Model
     // Deshabilitar timestamps (created_at y updated_at) si no los usas
     public $timestamps = false;
 
-    public function cargo_historiales()
+    public function personales()
 {
-    return $this->belongsTo(historial_cargos::class, 'historial_cargo_id');
+    return $this->belongsToMany(Personal::class, 'historial_cargos', 'cargo_id', 'personal_id')
+    ->withPivot("tiempo_inicio", 'tiempo_final');
 }
+
 
     
 }

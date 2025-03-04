@@ -27,18 +27,12 @@ class historial_rotacion extends Model
 
     // Deshabilitar marcas de tiempo
 
-     public function personales(){
+    public function personales()
+    {
+        return $this->belongsTo(Personal::class, 'personal_id', 'personal_id');
+    }
+    
 
-        return $this->hasMany(Personal::class, 'personal_id');
-
-
-     }
-
-     public function sucursales(){
-
-        return $this->hasMany(Sucursal::class,'sucursal_id');
-     }
-
-
+   
 
 }

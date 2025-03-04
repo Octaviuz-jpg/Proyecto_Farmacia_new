@@ -30,9 +30,14 @@ class Sucursal extends Model
         'numerodetlf',
     ];
 
-    public function historial_rotaciones(){
-       return $this->belongsTo(historial_rotacion::class,'historial_id');
+    public function personales()
+    {
+        return $this->belongsToMany(Personal::class, 'historial_rotaciones', 'sucursal_id', 'personal_id')
+        ->withPivot('fecha_entrada', 'fecha_salida');
+                
     }
+    
+
 
 
 

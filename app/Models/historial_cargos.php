@@ -42,14 +42,5 @@ class historial_cargos extends Model
     public $timestamps = false;
 
     // Relación con el mo delo Cargo
-    public function cargos()
-    {
-        return $this->hasMany(Cargo::class, 'cargo_id');
-    }
-
-    // Relación con el modelo Personal
-    public function personales()
-    {
-        return $this->hasMany(Personal::class, 'personal_id');
-    }
+  
 }

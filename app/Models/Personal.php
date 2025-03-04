@@ -43,26 +43,30 @@ class Personal extends Model
     // Deshabilitar timestamps (created_at y updated_at) si no los usas
     public $timestamps = false;
 
-    public function historiales()
-{
-    return $this->hasMany(historial_cargos::class, 'personal_id', 'personal_id');
-}
+    
 
-public function sucursal_rotaciones(){
-    return $this->belongsTo(historial_rotacion::class, "historial_id");
+    public function sucursales()
+{
+    return $this->belongsToMany(Sucursal::class, 'historial_rotaciones', 'personal_id', 'sucursal_id')
+    ->withPivot('fecha_entrada', 'fecha_salida');
+    
 }
 
 public function ingresos_personal(){
     return $this->hasMany(ingreso_personal::class, 'personal_id');
 }
 
-public function historial_rotaciones(){
-    return $this->belongsTo(historial_rotacion::class,'historial_id');
- }
-
- public function cargo_historiales()
+/*public function historial_rotaciones()
 {
-return $this->belongsTo(historial_cargos::class, 'historial_cargo_id');
+    return $this->hasMany(historial_rotacion::class, 'personal_id', 'personal_id');
+}*/
+
+
+public function cargos()
+{
+    return $this->belongsToMany(Cargo::class, 'historial_cargos', 'personal_id', 'cargo_id')
+    ->withPivot('tiempo_inicio', 'tiempo_final');
+                
 }
 
 
