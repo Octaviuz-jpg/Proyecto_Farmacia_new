@@ -66,6 +66,45 @@ class AdministradorController extends Controller
     
 
     }
+
+    
+
 }
+
+public function sucursalListaTrabajador(Request $request)
+{
+    $sucursalId = $request->input('sucursal_id');
+    
+    // Consulta a la tabla intermedia para verificar `fecha_de_salida`
+    $trabajadores = Personal::whereHas('sucursales', function ($query) use ($sucursalId) {
+        $query->where('historial_rotaciones.sucursal_id', $sucursalId)
+              ->where('historial_rotaciones.fecha_salida', '0000-00-00 00:00:00'); // Busca "0000-00-00 00:00:00"
+    })->get();
+    
+
+    // Retorna la vista con los trabajadores filtrados
+    return view('sucursaltrabajador', compact('trabajadores'));
 }
+
+public function agregarSucursal(Request $request) {
+    $request->validate([
+    
+        'ubicacion' => 'nullable|string|max:255',
+        'numerodetlf' => 'nullable|string|max:15',
+    ]);
+
+    Sucursal::create([
+        
+        'ubicacion' => $request->input('ubicacion'),
+        'numerodetlf' => $request->input('telefono'),
+    ]);
+
+    return redirect()->route('sucursal-agregar')->with('success', '¡Sucursal agregada exitosamente!');
+}
+
+}
+
+
+
+
 

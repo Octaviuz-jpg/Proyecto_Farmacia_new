@@ -61,7 +61,7 @@
                 </td>
             </tr>
             @endforeach
-
+            
             <form action="{{ route('ficha-nombre') }}" method="GET">
                 @csrf <!-- Esto es obligatorio para proteger contra ataques CSRF -->
                 <label for="query">Nombre del trabajador:</label>

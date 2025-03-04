@@ -22,7 +22,7 @@ class StockMedicamentoSeeder extends Seeder
                 $stockmedicamento->medicamento_id = 41 + $i;
         
                 // Asignar el ID de la sucursal
-                $stockmedicamento->sucursal_id = $sucursal_id;
+                $stockmedicamento->stock_id = $sucursal_id;
         
                 // Asignar un valor para cantidad
                 $stockmedicamento->cantidad = rand(1, 100); // Generar una cantidad aleatoria entre 1 y 100

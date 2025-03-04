@@ -51,7 +51,14 @@ class DatabaseSeeder extends Seeder
             //LabMedicamentoSeeder::class,
            // PedidoSeeder::class,
            //PedidoProveedorSeeder::class,
-           ComprasSeeder::class,
+          // ComprasSeeder::class,
+         // HistorialCargosSeeder::class,
+         // HistorialRotacionesSeeder::class,
+         // LabMedicamentoSeeder::class,
+         // MedicamentoPresentacionSeeder::class,
+          //StockSeeder::class,
+          StockMedicamentoSeeder::class,
+
         ]);
 
 

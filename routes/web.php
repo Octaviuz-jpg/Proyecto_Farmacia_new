@@ -24,3 +24,7 @@ Route::get('/ficha-nombre',[FichaController::class, 'BuscarNombre'])->name('fich
 Route::delete('/personal/{id}', [AdministradorController::class, 'personalBorrar'])->name('personal-borrar');
 
 Route::post('/personal-agregar',[AdministradorController::class,'personalAgregar'])->name('personal-agregar');
+
+Route::get('/sucursal-trabajador',[AdministradorController::class,'sucursalListaTrabajador'])->name('sucursal-trabajador');
+
+Route::post("/sucursal-agregar",[AdministradorController::class, 'agregarSucursal'])->name('sucursal-agregar');
