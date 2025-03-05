@@ -43,31 +43,53 @@ class Personal extends Model
     // Deshabilitar timestamps (created_at y updated_at) si no los usas
     public $timestamps = false;
 
-    
+
 
     public function sucursales()
-{
-    return $this->belongsToMany(Sucursal::class, 'historial_rotaciones', 'personal_id', 'sucursal_id')
-    ->withPivot('fecha_entrada', 'fecha_salida');
-    
-}
+    {
+        return $this->belongsToMany(Sucursal::class, 'historial_rotaciones', 'personal_id', 'sucursal_id')
+            ->withPivot('fecha_entrada', 'fecha_salida');
 
-public function ingresos_personal(){
-    return $this->hasMany(ingreso_personal::class, 'personal_id');
-}
+    }
 
-/*public function historial_rotaciones()
+    public function ingresos_personal(){
+        return $this->hasMany(ingreso_personal::class, 'personal_id');
+    }
+
+    /*public function historial_rotaciones()
 {
     return $this->hasMany(historial_rotacion::class, 'personal_id', 'personal_id');
 }*/
 
 
-public function cargos()
-{
-    return $this->belongsToMany(Cargo::class, 'historial_cargos', 'personal_id', 'cargo_id')
-    ->withPivot('tiempo_inicio', 'tiempo_final');
-                
-}
+    public function cargos()
+    {
+        return $this->belongsToMany(Cargo::class, 'historial_cargos', 'personal_id', 'cargo_id')
+            ->withPivot('tiempo_inicio', 'tiempo_final');
+
+    }
+
+    public function historialRotaciones()
+    {
+        return $this->hasMany(historial_rotacion::class, 'personal_id');
+    }
+
+    public function historialCargos()
+    {
+        return $this->hasMany(historial_cargos::class, 'personal_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($personal) {
+            // Eliminar relaciones de historial_rotacion
+            $personal->historialRotaciones()->delete();
+            // Eliminar relaciones primero
+            $personal->historialCargos()->delete();
+        });
+    }
 
 
 }

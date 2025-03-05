@@ -40,11 +40,11 @@ class Cargo extends Model
     public $timestamps = false;
 
     public function personales()
-{
-    return $this->belongsToMany(Personal::class, 'historial_cargos', 'cargo_id', 'personal_id')
-    ->withPivot("tiempo_inicio", 'tiempo_final');
-}
+    {
+        return $this->belongsToMany(Personal::class, 'historial_cargos', 'cargo_id', 'personal_id')
+            ->withPivot("tiempo_inicio", 'tiempo_final');
+    }
 
 
-    
+
 }

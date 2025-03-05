@@ -1,62 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gestión de Sucursales</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style-sucursal.css">
-    <title>Document</title>
 </head>
 <body>
-    <h1 class="titulo">Lista de Sucursales</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Ubicación</th>
-                <th>Teléfono</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($sucursales as $sucursal)
-                <tr>
-                    <td>{{ $sucursal->sucursal_id }}</td>
-                    <td>{{ $sucursal->ubicacion }}</td>
-                    <td>{{ $sucursal->numerodetlf }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <div>
-        <button type="button" onclick="window.location.href='/administrador'">retroceder</button>
-    </div>
-    <!--boton para buscar trabajadores por sucursal-->
-    <div>
-        <form action="{{ route('sucursal-trabajador') }}" method="get">
-            <label for="sucursal_id">Ingrese el ID de la sucursal:</label>
-            <input type="text" name="sucursal_id" id="sucursal_id" placeholder="Escriba el ID de la sucursal" required>
-            
-            <button type="submit" style="margin-top: 10px; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                Buscar Trabajadores
+    <header class="admin-header">
+        <div class="header-content">
+            <h1 class="titulo">
+                <i class="fas fa-store-alt"></i>
+                Gestión de Sucursales
+            </h1>
+            <button class="button-retroceder" onclick="window.location.href='/administrador'">
+                <i class="fas fa-arrow-left"></i>
+                Volver al Panel
             </button>
-        </form>
-    </div>
+        </div>
+    </header>
 
-    <div>
-        <h1>Agregar una Nueva Sucursal</h1>
-        <form action="{{ route('sucursal-agregar') }}" method="POST">
-            @csrf
-            <label for="ubicacion">Ubicacion:</label>
-            <input type="text" name="ubicacion" id="ubicacion" required>
-            <br>
-    
-            <label for="telefono">Telefono:</label>
-            <input type="text" name="telefono" id="telefono">
-            <br>
-    
-            <button type="submit">Agregar Sucursal</button>
-        </form>
-    </div>
-    
+    <main class="container">
+        <section class="dashboard-section">
+            <div class="table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-hashtag"></i> ID</th>
+                            <th><i class="fas fa-map-marker-alt"></i> Ubicación</th>
+                            <th><i class="fas fa-phone"></i> Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($sucursales as $sucursal)
+                            <tr>
+                                <td>{{ $sucursal->sucursal_id }}</td>
+                                <td>{{ $sucursal->ubicacion }}</td>
+                                <td>{{ $sucursal->numerodetlf }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="action-cards">
+                <div class="action-card">
+                    <h2><i class="fas fa-search"></i> Buscar Trabajadores</h2>
+                    <form action="{{ route('sucursal-trabajador') }}" method="get">
+                        <div class="form-group">
+                            <label for="sucursal_id">ID de Sucursal:</label>
+                            <input type="text" name="sucursal_id" id="sucursal_id"
+                                   placeholder="Ej: 123" required>
+                        </div>
+                        <button type="submit" class="modern-button">
+                            <i class="fas fa-users"></i> Buscar
+                        </button>
+                    </form>
+                </div>
+
+                <div class="action-card">
+                    <h2><i class="fas fa-plus-circle"></i> Nueva Sucursal</h2>
+                    <form action="{{ route('sucursal-agregar') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="ubicacion">Ubicación:</label>
+                            <input type="text" name="ubicacion" id="ubicacion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono:</label>
+                            <input type="text" name="telefono" id="telefono">
+                        </div>
+                        <button type="submit" class="modern-button">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

@@ -1,77 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lista de Trabajadores</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <title>Ficha de Trabajadores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style-ficha.css">
 </head>
 <body>
-    <h1>ficha de todos los trabajadores</h1>
+    <header class="admin-header">
+        <div class="header-content">
+            <h1 class="titulo">
+                <i class="fas fa-id-badge"></i>
+                Ficha Completa de Trabajadores
+            </h1>
+            <button class="button-retroceder" onclick="window.location.href='/personal'">
+                <i class="fas fa-arrow-left"></i>
+                Volver
+            </button>
+        </div>
+    </header>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Correo</th>
-                <th>Teléfono</th>
-                <th>Cargo</th>
-                <th>Rotaciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($trabajadores as $trabajador)
-            <tr>
-                <td>{{ $trabajador->personal_id }}</td>
-                <td>{{ $trabajador->nombre }}</td>
-                <td>{{ $trabajador->apellido }}</td>
-                <td>{{ $trabajador->correo }}</td>
-                <td>{{ $trabajador->telefono }}</td>
-                <td>{{ $trabajador->cargos->pluck('cargo_id')->implode(', ') ?? 'Sin cargo' }}</td>
-                <td>
-                    @if ($trabajador->sucursales && $trabajador->sucursales->isNotEmpty())
-                        <ul>
-                            @foreach ($trabajador->sucursales as $sucursal)
-                                <li>Sucursal ID: {{ $sucursal->sucursal_id }} | 
-                                Entrada: {{ $sucursal->pivot->fecha_entrada ?? 'Sin entrada' }} | 
-                                Salida: {{ $sucursal->pivot->fecha_salida ?? 'Sin salida' }}</li>
-                            @endforeach
-                        </ul>
-                    @else
-                        Sin rotaciones
-                    @endif
-                </td>
-            </tr>
-            @endforeach
-            
+    <main class="container">
+        <div class="search-card">
             <form action="{{ route('ficha-nombre') }}" method="GET">
-                @csrf <!-- Esto es obligatorio para proteger contra ataques CSRF -->
-                <label for="query">Nombre del trabajador:</label>
-                <input type="text" id="query" name="query" placeholder="Ingrese un nombre" required>
-                <button type="submit">Buscar</button>
+                <div class="form-group">
+                    <label for="query"><i class="fas fa-search"></i> Buscar Trabajador:</label>
+                    <div class="search-container">
+                        <input type="text" id="query" name="query"
+                               placeholder="Ingrese nombre del trabajador" required>
+                        <button type="submit" class="modern-button">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                    </div>
+                </div>
             </form>
-        </tbody>
-        <form>
+        </div>
 
-        </form>
-    </table>
+        <div class="table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag"></i> ID</th>
+                        <th><i class="fas fa-user"></i> Nombre</th>
+                        <th><i class="fas fa-user-tag"></i> Apellido</th>
+                        <th><i class="fas fa-envelope"></i> Correo</th>
+                        <th><i class="fas fa-phone"></i> Teléfono</th>
+                        <th><i class="fas fa-briefcase"></i> Cargo</th>
+                        <th><i class="fas fa-exchange-alt"></i> Rotaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($trabajadores as $trabajador)
+                    <tr>
+                        <td>{{ $trabajador->personal_id }}</td>
+                        <td>{{ $trabajador->nombre }}</td>
+                        <td>{{ $trabajador->apellido }}</td>
+                        <td>{{ $trabajador->correo }}</td>
+                        <td>{{ $trabajador->telefono }}</td>
+                        <td>{{ $trabajador->cargos->pluck('cargo_id')->implode(', ') ?? 'Sin cargo' }}</td>
+                        <td>
+                            @if ($trabajador->sucursales && $trabajador->sucursales->isNotEmpty())
+                                <ul class="rotation-list">
+                                    @foreach ($trabajador->sucursales as $sucursal)
+                                        <li>
+                                            <i class="fas fa-store"></i> Sucursal {{ $sucursal->sucursal_id }}
+                                            <div class="rotation-dates">
+                                                <span class="date-entry"><i class="fas fa-sign-in-alt"></i> {{ $sucursal->pivot->fecha_entrada ?? 'Sin entrada' }}</span>
+                                                <span class="date-exit"><i class="fas fa-sign-out-alt"></i> {{ $sucursal->pivot->fecha_salida ?? 'Sin salida' }}</span>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <span class="no-rotations">Sin rotaciones</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </main>
 </body>
 </html>

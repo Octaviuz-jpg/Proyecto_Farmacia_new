@@ -21,7 +21,10 @@ Route::get('/personal-ficha', [FichaController::class, 'listasTrabajadores'])->n
 
 Route::get('/ficha-nombre',[FichaController::class, 'BuscarNombre'])->name('ficha-nombre');
 
-Route::delete('/personal/{id}', [AdministradorController::class, 'personalBorrar'])->name('personal-borrar');
+#Route::delete('/personal/{id}', [AdministradorController::class, 'personalBorrar'])->name('personal-borrar');
+
+Route::delete('/personal/{personal}', [AdministradorController::class, 'personalBorrar'])
+     ->name('personal-borrar');
 
 Route::post('/personal-agregar',[AdministradorController::class,'personalAgregar'])->name('personal-agregar');
 
