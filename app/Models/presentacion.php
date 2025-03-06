@@ -28,7 +28,7 @@ class presentacion extends Model
 
 
     public function medicamentos(){
-        return $this->belongsToMany(medicamento::class, 'medicamento_presentaciones');
+        return $this->belongsToMany(medicamento::class, 'medicamento_presentaciones', 'presentacion_id', 'medicamentos_id');
         
     }
 }

@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\medicamento_presentacion;
-use App\Models\medicamento_presentaciones;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
+use App\Models\Medicamento;
+use App\Models\Presentacion;
+use Illuminate\Support\Facades\DB;
 
 class MedicamentoPresentacionSeeder extends Seeder
 {
@@ -15,18 +14,30 @@ class MedicamentoPresentacionSeeder extends Seeder
      */
     public function run(): void
     {
-        
-    
-        $faker = Faker::create();
-        
-        // Suponemos que ya tienes medicamentos y presentaciones en tus tablas
-        // Vamos a relacionar los medicamentos con sus presentaciones
-        for ($i = 1; $i <= 20; $i++) { // Supongamos que tienes al menos 20 medicamentos y 20 presentaciones
-            medicamento_presentacion::create([
-                'medicamentos_id' => $faker->numberBetween(41, 60), // ID del medicamento
-                'presentacion_id' => $faker->numberBetween(1, 20), // ID de la presentación
-            ]);
+        // Obtener todos los IDs de medicamentos y presentaciones existentes
+        $medicamentos = Medicamento::pluck('medicamentos_id')->toArray(); // IDs de medicamentos
+        $presentaciones = Presentacion::pluck('presentacion_id')->toArray(); // IDs de presentaciones
+
+        // Verifica que ambas tablas no estén vacías
+        if (empty($medicamentos) || empty($presentaciones)) {
+            $this->command->info('No hay medicamentos o presentaciones en las tablas. Asegúrate de poblarlos primero.');
+            return;
+        }
+
+        // Asignar al menos 1 y máximo 3 presentaciones a cada medicamento
+        foreach ($medicamentos as $medicamentoId) {
+            // Seleccionar entre 1 y 3 presentaciones aleatorias
+            $presentacionesAleatorias = collect($presentaciones)->random(rand(1, 3));
+
+            foreach ($presentacionesAleatorias as $presentacionId) {
+                // Crear la relación en la tabla pivote
+                DB::table('medicamento_presentaciones')->insert([
+                    'medicamentos_id' => $medicamentoId,
+                    'presentacion_id' => $presentacionId,
+                ]);
             }
-        
-   }
+        }
+
+        $this->command->info('Relaciones entre medicamentos y presentaciones generadas con éxito.');
+    }
 }

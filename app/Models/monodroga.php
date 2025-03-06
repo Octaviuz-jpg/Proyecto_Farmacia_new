@@ -30,6 +30,6 @@ class monodroga extends Model
 
     public function medicamentos(){
 
-        return $this->belongsToMany(medicamento::class, 'monodroga_medicamentos');
+        return $this->belongsToMany(medicamento::class, 'monodroga_medicamentos','monodroga_id', 'medicamentos_id');
     }
 }

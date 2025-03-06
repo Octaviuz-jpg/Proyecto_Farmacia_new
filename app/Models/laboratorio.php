@@ -31,7 +31,7 @@ class laboratorio extends Model
     public $timestamps = false;
 
     public function medicamentos(){
-        return $this->belongsToMany(medicamento::class,'lab_medicamento');
+        return $this->belongsToMany(medicamento::class,'lab_medicamento', 'lab_id', 'medicamentos_id');
     }
     
 

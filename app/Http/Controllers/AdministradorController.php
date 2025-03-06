@@ -8,10 +8,7 @@ use App\Models\Sucursal;
 use App\Models\Cargo;
 use App\Models\Personal;
 use App\Models\historial_cargos;
-
-
-
-
+use App\Models\laboratorio;
 
 class AdministradorController extends Controller
 {
@@ -112,6 +109,13 @@ class AdministradorController extends Controller
         ]);
 
         return redirect()->route('sucursal-agregar')->with('success', '¡Sucursal agregada exitosamente!');
+    }
+
+    public function laboratorios(){
+
+        $lab = laboratorio::all();
+
+        return view('laboratorios', compact('lab'));
     }
 
 

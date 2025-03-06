@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\monodroga;
-use App\Models\monodroga_medicamento;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
+use App\Models\Medicamento;
+use App\Models\Monodroga;
 
 class MonodrogaMedicamentoSeeder extends Seeder
 {
@@ -15,15 +13,28 @@ class MonodrogaMedicamentoSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
-        
-        // Suponemos que ya tienes medicamentos y monodrogas en tus tablas
-        // Vamos a relacionar los medicamentos con sus monodrogas
-        for ($i = 1; $i <= 20; $i++) { // Supongamos que tienes al menos 20 medicamentos y 20 monodrogas
-            monodroga_medicamento::create([
-                'medicamentos_id' => $faker->numberBetween(41, 60), // ID del medicamento
-                'monodroga_id' => $faker->numberBetween(81, 100), // ID de la monodroga
-            ]);
+        // Obtener los medicamentos y monodrogas disponibles
+        $medicamentos = Medicamento::all();
+        $monodrogas = Monodroga::pluck('monodroga_id')->toArray(); // IDs de todas las monodrogas
+
+        // Verifica que haya registros en ambas tablas
+        if ($medicamentos->isEmpty() || empty($monodrogas)) {
+            $this->command->info('No hay medicamentos o monodrogas en las tablas. Asegúrate de poblarlos primero.');
+            return;
         }
+
+        foreach ($medicamentos as $medicamento) {
+            // Selecciona entre 1 y 3 monodrogas aleatorias
+            $monodrogasAleatorias = collect($monodrogas)->random(rand(1, 3));
+
+            foreach ($monodrogasAleatorias as $monodrogaId) {
+                // Especificar la tabla para evitar ambigüedad
+                if (!$medicamento->monodrogas()->where('monodroga.monodroga_id', $monodrogaId)->exists()) {
+                    $medicamento->monodrogas()->attach($monodrogaId);
+                }
+            }
+        }
+
+        $this->command->info('Relaciones consistentes entre medicamentos y monodrogas creadas con éxito.');
     }
 }

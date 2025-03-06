@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministradorController;
+use App\Http\Controllers\controllermedicamento;
 use App\Http\Controllers\FichaController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\HomeController;
@@ -29,3 +30,10 @@ Route::post('/personal-agregar',[AdministradorController::class,'personalAgregar
 Route::get('/sucursal-trabajador',[AdministradorController::class,'sucursalListaTrabajador'])->name('sucursal-trabajador');
 
 Route::post("/sucursal-agregar",[AdministradorController::class, 'agregarSucursal'])->name('sucursal-agregar');
+
+Route::get('/medicamentos', [controllermedicamento::class, 'listamedicamento'])->name('medicamentos');
+
+Route::get('/laboratorios', [AdministradorController::class, 'laboratorios'])->name('laboratorios');
+
+Route::post('/medicamento-agregar', [controllermedicamento::class, 'agregarMedicamentos'])->name('medicamento-agregar');
+

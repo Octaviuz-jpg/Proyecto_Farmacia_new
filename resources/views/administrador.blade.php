@@ -39,6 +39,20 @@
                 <p>Gestiona ubicaciones y horarios</p>
             </a>
         </div>
+
+            <!--Boton para ir a la vista de medicamentos!-->
+        <form action="{{ route('medicamentos') }}" method="GET">
+            @csrf
+            <button>ir medicamentos</button>
+             
+        </form>
+
+        <!--Boton para ir a la vista de laboratorios!-->
+        <form action="{{ route('laboratorios') }}" method="GET">
+            @csrf
+            <button>laboratorios</button>
+        </form>
+
     </main>
 </body>
 </html>
