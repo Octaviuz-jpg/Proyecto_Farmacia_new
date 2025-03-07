@@ -37,7 +37,7 @@ class medicamento extends Model
         return $this->belongsToMany(monodroga::class, 'monodroga_medicamentos', 'medicamentos_id', 'monodroga_id');
     }
     public function laboratorios(){
-        return $this->belongsToMany(laboratorio::class,'lab_medicamento', 'medicamentos_id', 'lab_id');
+        return $this->belongsToMany(laboratorio::class,'lab_medicamento', 'medicamento_id', 'lab_id');
     }
     public function presentaciones(){
         return $this->belongsToMany(presentacion::class, 'medicamento_presentaciones', 'medicamentos_id', 'presentacion_id');

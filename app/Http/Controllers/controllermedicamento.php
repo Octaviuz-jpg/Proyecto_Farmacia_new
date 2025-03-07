@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class controllermedicamento extends Controller
 {
     public function listamedicamento(){
-        $medicamentos = medicamento::with('monodrogas', 'presentaciones')->get();
+        $medicamentos = medicamento::with('monodrogas', 'presentaciones','laboratorios')->get();
 
         return view('medicamentos', compact('medicamentos'));
 
@@ -42,7 +42,35 @@ class controllermedicamento extends Controller
         $medicamento->presentaciones()->attach($presentaciones);
     }
 
+    // Asociar laboratorios
+    if ($request->filled('laboratorios')) {
+        $laboratorios = explode(',', $request->laboratorios); // Convertir IDs en array
+        $medicamento->laboratorios()->attach($laboratorios);
+    }
     return redirect()->back()->with('success', 'Medicamento creado con éxito.');
 }
+    public function quitarMedicamento(Request $request)
+{
+    // Validar los datos del formulario
+    $request->validate([
+        'medicamentos_id' => 'required|integer',
+    ]);
+
+    // Obtener el medicamento por su ID
+    $medicamento = medicamento::findOrFail($request->medicamentos_id);
+
+    // Quitar asociaciones con monodrogas
+    $medicamento->monodrogas()->detach();
+
+    // Quitar asociaciones con presentaciones
+    $medicamento->presentaciones()->detach();
+
+    // (Opcional) Eliminar el medicamento si es necesario
+    $medicamento->delete();
+
+    return redirect()->back()->with('success', 'Medicamento y relaciones eliminados con éxito.');
+}
+
+
 
 }

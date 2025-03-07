@@ -118,5 +118,41 @@ class AdministradorController extends Controller
         return view('laboratorios', compact('lab'));
     }
 
+    public function agregarLaboratorios(Request $request){
+
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'required|int'
+
+        ]);
+
+        laboratorio::create([
+
+            'nombre' => $request->input('nombre'),
+            'direccion' =>$request->input('direccion'),
+            'telefono' => $request->input('telefono'),
+        ]);
+
+        return redirect()->route('agregar-laboratorio')->with('success', 'laboratorio agregada exitosamente!');
+    }
+
+
+    public function eliminarLaboratorio(Request $request)
+{
+    // Validar los datos del formulario
+    // Validar que el ID sea un entero y que exista en la base de datos
+    $request->validate([
+        'lab_id' => 'required|integer|exists:laboratorios,lab_id',
+    ]);
+
+    // Obtener el laboratorio y eliminarlo
+    $laboratorio = laboratorio::findOrFail($request->lab_id);
+    $laboratorio->delete();
+
+    // Redirige con un mensaje de éxito
+    return redirect()->back()->with('success', 'Laboratorio eliminado exitosamente!');
+}
+
 
 }

@@ -40,12 +40,13 @@
                 <th>Nombre Medicamento</th>
                 <th>Monodrogas Asociadas</th>
                 <th>Presentaciones Asociadas</th>
+                <th>Laboratorios Fabricantes</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($medicamentos as $medicamento)
                 <tr>
-                    <td>{{ $medicamento->medicamento_id }}</td>
+                    <td>{{ $medicamento->medicamentos_id }}</td>
                     <td>{{ $medicamento->nombre }}</td>
                     <td>
                         <ul>
@@ -61,22 +62,43 @@
                             @endforeach
                         </ul>
                     </td>
+                    <td>
+                        <ul>
+                            @foreach ($medicamento->laboratorios as $laboratorio)
+                                <li>{{ $laboratorio->nombre }} (ID: {{ $laboratorio->lab_id }})</li>
+                            @endforeach
+                        </ul>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
     <h2>Agregar Nuevo Medicamento</h2>
-<form action="{{ route('medicamento-agregar') }}" method="POST">
-    @csrf <!-- Token de seguridad obligatorio en Laravel -->
-    <label for="nombre">Nombre del Medicamento:</label>
-    <input type="text" id="nombre" name="nombre" required placeholder="Nombre del medicamento">
+    <form action="{{ route('medicamento-agregar') }}" method="POST">
+        @csrf <!-- Token de seguridad obligatorio en Laravel -->
+        <label for="nombre">Nombre del Medicamento:</label>
+        <input type="text" id="nombre" name="nombre" required placeholder="Nombre del medicamento">
 
-    <label for="monodrogas">Monodrogas Asociadas (IDs separados por comas):</label>
-    <input type="text" id="monodrogas" name="monodrogas" placeholder="Ejemplo: 1,2,3">
+        <label for="monodrogas">Monodrogas Asociadas (IDs separados por comas):</label>
+        <input type="text" id="monodrogas" name="monodrogas" placeholder="Ejemplo: 1,2,3">
 
-    <label for="presentaciones">Presentaciones Asociadas (IDs separados por comas):</label>
-    <input type="text" id="presentaciones" name="presentaciones" placeholder="Ejemplo: 1,4,5">
+        <label for="presentaciones">Presentaciones Asociadas (IDs separados por comas):</label>
+        <input type="text" id="presentaciones" name="presentaciones" placeholder="Ejemplo: 1,4,5">
 
-    <button type="submit">Guardar Medicamento</button>
-</form>
+        <label for="laboratorios">Laboratorios Asociados (IDs separados por comas):</label>
+        <input type="text" id="laboratorios" name="laboratorios" placeholder="Ejemplo: 1,2,3">
+
+        <button type="submit">Guardar Medicamento</button>
+    </form>
+
+    <h2>Eliminar Medicamento</h2>
+    <form action="{{ route('quitar-medicamento') }}" method="POST">
+        @csrf
+        @method('DELETE') <!-- Indicamos que esta es una solicitud DELETE -->
+        <label for="medicamentos_id">ID del Medicamento:</label>
+        <input type="number" id="medicamentos_id" name="medicamentos_id" required placeholder="ID del medicamento">
+        <button type="submit">Eliminar Medicamento</button>
+    </form>
+</body>
+</html>

@@ -50,7 +50,7 @@
         <!--Boton para ir a la vista de laboratorios!-->
         <form action="{{ route('laboratorios') }}" method="GET">
             @csrf
-            <button>laboratorios</button>
+            <button> ver laboratorios</button>
         </form>
 
     </main>

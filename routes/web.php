@@ -37,3 +37,8 @@ Route::get('/laboratorios', [AdministradorController::class, 'laboratorios'])->n
 
 Route::post('/medicamento-agregar', [controllermedicamento::class, 'agregarMedicamentos'])->name('medicamento-agregar');
 
+Route::delete('/quitar-medicamento', [controllermedicamento::class, "quitarMedicamento"])->name("quitar-medicamento");
+
+Route::post('/agregar-laboratorio', [AdministradorController::class, 'agregarLaboratorios'])->name('agregar-laboratorio');
+
+Route::delete('/laboratorio-eliminar', [AdministradorController::class, 'eliminarLaboratorio'])->name('laboratorio-eliminar');
