@@ -28,9 +28,13 @@ class medicamento extends Model
     public $timestamps = false;
 
 
-    public function stocks(){
-        return $this->belongsToMany(medicamento::class, 'stock_medicamento');
-    }
+
+    public function stocks()
+{
+    return $this->belongsToMany(Stock::class, 'stock_medicamento', 'medicamento_id', 'stock_id')
+                ->withPivot('cantidad', 'precio'); // Incluye los atributos de la tabla pivote
+}
+
 
     public function monodrogas(){
 
@@ -47,4 +51,18 @@ class medicamento extends Model
     public function pedido_proveedores(){
         return $this->hasMany(pedido_proveedor::class, 'medicamentos_id');
     }
+
+
+    public function sucursales()
+{
+    return $this->hasManyThrough(
+        Sucursal::class,      // Modelo final (Sucursal)
+        Stock::class,         // Modelo intermedio (Stock)
+        'medicamento_id',     // Clave foránea en `stock_medicamento` que apunta a `medicamentos`.
+        'sucursal_id',                 // Clave primaria en `sucursales`.
+        'medicamentos_id',                 // Clave primaria en `medicamentos`.
+        'sucursal_id'         // Clave foránea en `stocks` que apunta a `sucursales`.
+    );
+}
+
 }

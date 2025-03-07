@@ -53,6 +53,12 @@
             <button> ver laboratorios</button>
         </form>
 
+        <!--Boton para ir a la vista de stock_medicamentos!-->
+        <form action="{{ route('stock-medicamentos') }}" method="GET">
+            @csrf
+            <button> ver medicamentos sucursales</button>
+        </form>
+
     </main>
 </body>
 </html>

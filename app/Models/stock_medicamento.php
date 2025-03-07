@@ -30,4 +30,18 @@ class stock_medicamento extends Model
 
     // Deshabilitar marcas de tiempo si no las usas
     public $timestamps = false;
+
+
+    public function stock()
+{
+    return $this->belongsTo(Stock::class, 'stock_id', 'stock_id');
 }
+
+public function medicamento()
+{
+    return $this->belongsTo(Medicamento::class, 'medicamento_id', 'medicamentos_id');
+}
+
+}
+
+

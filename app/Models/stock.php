@@ -30,12 +30,16 @@ class stock extends Model
 
     public $timestamps = false;
 
-    public function sucursal(){
-        return $this->hasOne(sucursal::class, 'sucursal_id');
-    }
-    
-    public function medicamentos(){
-        return $this->belongsToMany(medicamento::class, 'stock_medicamentos');
-        
-    }
+    public function sucursal()
+{
+    return $this->belongsTo(Sucursal::class, 'sucursal_id', 'sucursal_id');
+}
+
+
+public function medicamentos()
+{
+    return $this->belongsToMany(Medicamento::class, 'stock_medicamento', 'stock_id', 'medicamento_id')
+                ->withPivot('cantidad', 'otra_columna'); // Asegúrate de incluir los atributos
+}
+
 }

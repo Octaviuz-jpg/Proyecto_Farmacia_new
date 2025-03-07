@@ -9,6 +9,9 @@ use App\Models\Cargo;
 use App\Models\Personal;
 use App\Models\historial_cargos;
 use App\Models\laboratorio;
+use App\Models\medicamento;
+use App\Models\stock;
+use App\Models\stock_medicamento;
 
 class AdministradorController extends Controller
 {
@@ -153,6 +156,28 @@ class AdministradorController extends Controller
     // Redirige con un mensaje de éxito
     return redirect()->back()->with('success', 'Laboratorio eliminado exitosamente!');
 }
+
+public function stockMedicamentos()
+{
+    $stockMedicamentos = stock_medicamento::with('stock.sucursal', 'medicamento')->get();
+    return view('stockmedicamentos', compact('stockMedicamentos'));
+}
+
+public function buscarMedicamento(Request $request)
+{
+    $request->validate([
+        'medicamento_id' => 'required|integer',
+    ]);
+
+
+    $medicamento = Medicamento::with('stocks')->find($request->input('medicamento_id'));
+
+   
+        return view('medicamento-detalles', compact('medicamento'));
+    
+}
+
+
 
 
 }

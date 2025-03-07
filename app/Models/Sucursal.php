@@ -36,6 +36,13 @@ class Sucursal extends Model
         ->withPivot('fecha_entrada', 'fecha_salida');
                 
     }
+
+    public function stock()
+{
+    return $this->hasOne(stock::class, 'sucursal_id', 'sucursal_id');
+}
+
+
     
 
 

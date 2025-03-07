@@ -42,3 +42,7 @@ Route::delete('/quitar-medicamento', [controllermedicamento::class, "quitarMedic
 Route::post('/agregar-laboratorio', [AdministradorController::class, 'agregarLaboratorios'])->name('agregar-laboratorio');
 
 Route::delete('/laboratorio-eliminar', [AdministradorController::class, 'eliminarLaboratorio'])->name('laboratorio-eliminar');
+
+Route::get('/stock-medicamentos',[AdministradorController::class, 'stockMedicamentos'])->name('stock-medicamentos');
+Route::post('/buscar-medicamento', [AdministradorController::class, 'buscarMedicamento'])->name('buscar-medicamento');
+Route::post('/buscar-stock-sucursal', [AdministradorController::class, 'buscarStockSucursal'])->name('buscar-stock-sucursal');
