@@ -31,7 +31,7 @@ class medicamento extends Model
 
     public function stocks()
 {
-    return $this->belongsToMany(Stock::class, 'stock_medicamento', 'medicamento_id', 'stock_id')
+    return $this->belongsToMany(stock::class, 'stock_medicamento', 'medicamento_id', 'stock_id')
                 ->withPivot('cantidad', 'precio'); // Incluye los atributos de la tabla pivote
 }
 
@@ -45,7 +45,7 @@ class medicamento extends Model
     }
     public function presentaciones(){
         return $this->belongsToMany(presentacion::class, 'medicamento_presentaciones', 'medicamentos_id', 'presentacion_id');
-        
+
     }
 
     public function pedido_proveedores(){

@@ -14,9 +14,11 @@ Route::get('/login', [LoginController::class, 'index']);
 
 Route::get('/administrador',[AdministradorController::class,'inicial']);
 
-Route:: get('/sucursal',[AdministradorController::class,'sedes']);
+//Route:: get('/sucursal',[AdministradorController::class,'sedes']);
 
-Route::get('/personal', [AdministradorController::class,'persona']);
+Route::get('/sucursal', [AdministradorController::class, 'sedes'])->name('sucursal');
+
+Route::get('/personal', [AdministradorController::class,'persona'])->name('personal');
 
 Route::get('/personal-ficha', [FichaController::class, 'listasTrabajadores'])->name('personal.ficha');
 

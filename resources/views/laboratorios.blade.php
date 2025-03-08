@@ -3,127 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratorios</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        tr:hover {
-            background-color: #f9f9f9;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-    </style>
+    <title>Gestión de Laboratorios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style-laboratorios.css">
 </head>
 <body>
-    <h1>Lista de Laboratorios</h1>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="titulo">
+                <i class="fas fa-microscope"></i>
+                Gestión de Laboratorios
+            </h1>
+            <button class="button-retroceder" onclick="window.location.href='/administrador'">
+                <i class="fas fa-arrow-left"></i>
+                Volver al Panel
+            </button>
+        </div>
+    </header>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($lab as $laboratorio)
-                <tr>
-                    <td>{{ $laboratorio->nombre }}</td>
-                    <td>{{ $laboratorio->direccion }}</td>
-                    <td>{{ $laboratorio->telefono }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <main class="container">
+        <div class="table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag"></i> ID</th>
+                        <th><i class="fas fa-building"></i> Nombre</th>
+                        <th><i class="fas fa-map-marker-alt"></i> Dirección</th>
+                        <th><i class="fas fa-phone"></i> Teléfono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($lab as $laboratorio)
+                    <tr>
+                        <td>{{ $laboratorio->lab_id }}</td>
+                        <td>{{ $laboratorio->nombre }}</td>
+                        <td>{{ $laboratorio->direccion }}</td>
+                        <td>{{ $laboratorio->telefono }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
-    <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Laboratorio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            text-align: center;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-             <h1>Agregar Laboratorio</h1>
-    <form action="{{ route('agregar-laboratorio') }}" method="post">
-        @csrf <!-- Token de seguridad para Laravel -->
-        
-        <!-- Campo para el Nombre -->
-        <label for="nombre">Nombre del Laboratorio</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Nombre del laboratorio" required maxlength="255">
-        
-        <!-- Campo para Dirección -->
-        <label for="direccion">Dirección</label>
-        <input type="text" id="direccion" name="direccion" placeholder="Código de dirección" required>
-        
-        <!-- Campo para Teléfono -->
-        <label for="telefono">Teléfono</label>
-        <input type="text" id="telefono" name="telefono" placeholder="Número de teléfono del laboratorio">
-        
-        <!-- Botón para Enviar -->
-        <button type="submit">Agregar Laboratorio</button>
-    </form>
+        <div class="action-cards">
+            <div class="action-card">
+                <h2><i class="fas fa-plus-circle"></i> Nuevo Laboratorio</h2>
+                <form action="{{ route('agregar-laboratorio') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nombre"><i class="fas fa-tag"></i> Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Ej: Laboratorio XYZ">
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion"><i class="fas fa-map"></i> Dirección:</label>
+                        <input type="text" id="direccion" name="direccion" required placeholder="Ej: Av. Principal #123">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono"><i class="fas fa-phone"></i> Teléfono:</label>
+                        <input type="text" id="telefono" name="telefono" placeholder="Ej: 555-1234">
+                    </div>
+                    <button type="submit" class="modern-button">
+                        <i class="fas fa-save"></i> Guardar Laboratorio
+                    </button>
+                </form>
+            </div>
 
-    <h1>Eliminar Laboratorio</h1>
-    <form action="{{ route('laboratorio-eliminar') }}" method="POST">
-        @csrf <!-- Token CSRF obligatorio en Laravel -->
-        @method('DELETE') <!-- Método DELETE para eliminar -->
-    
-        <!-- Campo para lab_id del laboratorio -->
-        <label for="lab_id">ID del Laboratorio a Eliminar</label>
-        <input type="number" id="lab_id" name="lab_id" placeholder="Ingrese el ID del laboratorio" required>
-    
-        <!-- Botón para enviar el formulario -->
-        <button type="submit">Eliminar Laboratorio</button>
-    </form>
-    
+            <div class="action-card danger-card">
+                <h2><i class="fas fa-trash-alt"></i> Eliminar Laboratorio</h2>
+                <form action="{{ route('laboratorio-eliminar') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <div class="form-group">
+                        <label for="lab_id"><i class="fas fa-exclamation-triangle"></i> ID Laboratorio:</label>
+                        <input type="number" id="lab_id" name="lab_id" required placeholder="Ej: 123">
+                    </div>
+                    <button type="submit" class="modern-button danger">
+                        <i class="fas fa-trash"></i> Eliminar Permanentemente
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
-
-<

@@ -34,12 +34,12 @@ class stock_medicamento extends Model
 
     public function stock()
 {
-    return $this->belongsTo(Stock::class, 'stock_id', 'stock_id');
+    return $this->belongsTo(stock::class, 'stock_id', 'stock_id');
 }
 
 public function medicamento()
 {
-    return $this->belongsTo(Medicamento::class, 'medicamento_id', 'medicamentos_id');
+    return $this->belongsTo(medicamento::class, 'medicamento_id', 'medicamentos_id');
 }
 
 }

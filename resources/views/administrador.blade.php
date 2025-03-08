@@ -23,6 +23,7 @@
 
     <main class="admin-main">
         <div class="dashboard-container">
+            <!-- Tarjetas existentes -->
             <a href="/personal" class="dashboard-card">
                 <div class="card-icon">
                     <i class="fas fa-users-cog"></i>
@@ -38,27 +39,32 @@
                 <h2>Control de Sucursales</h2>
                 <p>Gestiona ubicaciones y horarios</p>
             </a>
+
+            <!-- Nuevas tarjetas -->
+            <a href="{{ route('medicamentos') }}" class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <h2>Gestión de Medicamentos</h2>
+                <p>Administra inventario y productos</p>
+            </a>
+
+            <a href="{{ route('laboratorios') }}" class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h2>Control de Laboratorios</h2>
+                <p>Gestiona proveedores y fármacos</p>
+            </a>
+
+            <a href="{{ route('stock-medicamentos') }}" class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <h2>Stock por Sucursal</h2>
+                <p>Consulta y gestiona inventarios</p>
+            </a>
         </div>
-
-            <!--Boton para ir a la vista de medicamentos!-->
-        <form action="{{ route('medicamentos') }}" method="GET">
-            @csrf
-            <button>ir medicamentos</button>
-             
-        </form>
-
-        <!--Boton para ir a la vista de laboratorios!-->
-        <form action="{{ route('laboratorios') }}" method="GET">
-            @csrf
-            <button> ver laboratorios</button>
-        </form>
-
-        <!--Boton para ir a la vista de stock_medicamentos!-->
-        <form action="{{ route('stock-medicamentos') }}" method="GET">
-            @csrf
-            <button> ver medicamentos sucursales</button>
-        </form>
-
     </main>
 </body>
 </html>

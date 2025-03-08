@@ -8,6 +8,7 @@ use App\Models\Sucursal;
 use App\Models\Cargo;
 use App\Models\Personal;
 use App\Models\historial_cargos;
+use App\Models\historial_rotaciones;
 use App\Models\laboratorio;
 use App\Models\medicamento;
 use App\Models\stock;
@@ -32,7 +33,9 @@ class AdministradorController extends Controller
     public function persona(){
 
         $personal = Personal::all();
-        return view('personal', compact('personal'));
+        $cargos = Cargo::all();
+        $sucursales = Sucursal::all();
+        return view('personal', compact('personal','cargos','sucursales'));
 
     }
 
@@ -74,31 +77,70 @@ class AdministradorController extends Controller
             'edad' => 'required|integer',
             'correo' => 'required|email|unique:personal',
             'telefono' => 'required|integer',
+            'cargo_id' => 'required|exists:cargos,cargo_id', // Nueva validación
+            'tiempo_inicio' => 'required|date', // Nueva validación
+            'sucursal_id' => 'required|exists:sucursal,sucursal_id',
+            'fecha_entrada' => 'required|date'
         ]);
 
-        Personal::create($request->all());
+        $fechaConHora = \Carbon\Carbon::parse($request->tiempo_inicio)
+            ->setTime(now()->hour, now()->minute, now()->second);
+        $personal = Personal::create($request->all());
 
-        return redirect()->route('personal-agregar')->with('success', 'Personal Agregado con exito');
+        // Registrar el cargo en el historial
+        $personal->cargos()->attach($request->cargo_id, [
+            'tiempo_inicio' => $fechaConHora,
+            'tiempo_final' => null
+        ]);
 
+        // Registrar la sucursal
+    $personal->sucursales()->attach($request->sucursal_id, [
+        'fecha_entrada' => \Carbon\Carbon::parse($request->fecha_entrada)
+            ->setTime(now()->hour, now()->minute, now()->second),
+        'fecha_salida' => null
+    ]);
+
+        return redirect()->route('personal')->with('success', 'Personal Agregado con exito');
     }
 
+
+    //public function sucursalListaTrabajador(Request $request)
+    //{
+    //    $sucursalId = $request->input('sucursal_id');
+
+    //    // Consulta a la tabla intermedia para verificar `fecha_de_salida`
+    //    $trabajadores = Personal::whereHas('sucursales', function ($query) use ($sucursalId) {
+    //        $query->where('historial_rotaciones.sucursal_id', $sucursalId)
+    //            ->where('historial_rotaciones.fecha_salida', '0000-00-00 00:00:00'); // Busca "0000-00-00 00:00:00"
+    //    })->get();
+
+
+    //    // Retorna la vista con los trabajadores filtrados
+    //    return view('sucursaltrabajador', compact('trabajadores'));
+    //}
 
     public function sucursalListaTrabajador(Request $request)
-    {
-        $sucursalId = $request->input('sucursal_id');
+{
+    $request->validate([
+        'sucursal_id' => 'required|exists:sucursal,sucursal_id'
+    ]);
 
-        // Consulta a la tabla intermedia para verificar `fecha_de_salida`
-        $trabajadores = Personal::whereHas('sucursales', function ($query) use ($sucursalId) {
-            $query->where('historial_rotaciones.sucursal_id', $sucursalId)
-                ->where('historial_rotaciones.fecha_salida', '0000-00-00 00:00:00'); // Busca "0000-00-00 00:00:00"
-        })->get();
+    $sucursalId = $request->input('sucursal_id');
+
+    $trabajadores = Personal::whereHas('sucursales', function ($query) use ($sucursalId) {
+        $query->where('historial_rotaciones.sucursal_id', $sucursalId)
+              ->whereNull('fecha_salida');
+    })->with(['sucursales' => function($q) use ($sucursalId) {
+        $q->wherePivot('sucursal_id', $sucursalId); // Cambio clave aquí
+    }])->get();
+
+    return view('sucursaltrabajador', compact('trabajadores'));
+}
 
 
-        // Retorna la vista con los trabajadores filtrados
-        return view('sucursaltrabajador', compact('trabajadores'));
-    }
 
-    public function agregarSucursal(Request $request) {
+       public function agregarSucursal(Request $request) {
+
         $request->validate([
 
             'ubicacion' => 'nullable|string|max:255',
@@ -111,7 +153,7 @@ class AdministradorController extends Controller
             'numerodetlf' => $request->input('telefono'),
         ]);
 
-        return redirect()->route('sucursal-agregar')->with('success', '¡Sucursal agregada exitosamente!');
+        return redirect()->route('sucursal')->with('success', '¡Sucursal agregada exitosamente!');
     }
 
     public function laboratorios(){
@@ -137,7 +179,7 @@ class AdministradorController extends Controller
             'telefono' => $request->input('telefono'),
         ]);
 
-        return redirect()->route('agregar-laboratorio')->with('success', 'laboratorio agregada exitosamente!');
+        return redirect()->route('laboratorios')->with('success', 'laboratorio agregada exitosamente!');
     }
 
 
@@ -172,9 +214,9 @@ public function buscarMedicamento(Request $request)
 
     $medicamento = Medicamento::with('stocks')->find($request->input('medicamento_id'));
 
-   
+
         return view('medicamento-detalles', compact('medicamento'));
-    
+
 }
 
 

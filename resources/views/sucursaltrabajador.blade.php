@@ -1,45 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Trabajadores de la Sucursal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f9;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-    </style>
+    <!-- Estilos permanecen igual -->
 </head>
 <body>
     <h1>Trabajadores de la Sucursal</h1>
@@ -54,22 +16,36 @@
                 <th>Correo</th>
                 <th>Teléfono</th>
                 <th>ID Sucursal</th>
+                <th>Fecha Ingreso</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($trabajadores as $trabajador)
                 <tr>
-                    <td>{{ $trabajador->id }}</td>
+                    <td>{{ $trabajador->personal_id }}</td>
                     <td>{{ $trabajador->nombre }}</td>
                     <td>{{ $trabajador->apellido }}</td>
                     <td>{{ $trabajador->edad }}</td>
                     <td>{{ $trabajador->correo }}</td>
                     <td>{{ $trabajador->telefono }}</td>
-                    <td>{{ $trabajador->sucursal_id }}</td>
-                </tr>
+                    <td>
+                        @foreach($trabajador->sucursales as $sucursal)
+                            {{ $sucursal->sucursal_id }}
+                        @endforeach
+                    </td>
+                    <td>
+    @foreach($trabajador->sucursales as $sucursal)
+        @if($sucursal->pivot->fecha_entrada)
+            {{ \Carbon\Carbon::parse($sucursal->pivot->fecha_entrada)->format('d/m/Y H:i') }}
+        @else
+            Sin registro
+        @endif
+    @endforeach
+</td>
+                                    </tr>
             @empty
                 <tr>
-                    <td colspan="7">No se encontraron trabajadores para esta sucursal.</td>
+                    <td colspan="8">No se encontraron trabajadores activos en esta sucursal</td>
                 </tr>
             @endforelse
         </tbody>

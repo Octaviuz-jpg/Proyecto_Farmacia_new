@@ -25,7 +25,7 @@ class stock extends Model
     protected $fillable = [
         'sucursal_id',
         'medicamento_id',
-        
+
     ];
 
     public $timestamps = false;

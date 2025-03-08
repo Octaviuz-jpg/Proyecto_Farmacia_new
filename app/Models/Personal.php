@@ -44,12 +44,11 @@ class Personal extends Model
     public $timestamps = false;
 
 
-
     public function sucursales()
     {
         return $this->belongsToMany(Sucursal::class, 'historial_rotaciones', 'personal_id', 'sucursal_id')
+            ->using(historial_rotacion::class) // Agregar esta línea
             ->withPivot('fecha_entrada', 'fecha_salida');
-
     }
 
     public function ingresos_personal(){
