@@ -34,6 +34,12 @@ Route::delete('/personal/{personal}', [AdministradorController::class, 'personal
 
 Route::post('/personal-agregar',[AdministradorController::class,'personalAgregar'])->name('personal-agregar');
 
+Route::get('/rotacion/{personal}/form', [AdministradorController::class, 'mostrarFormularioRotacion'])
+     ->name('rotacion.form');
+
+Route::post('/rotacion/{personal}', [AdministradorController::class, 'rotarPersonal'])
+     ->name('rotacion.store');
+
 Route::get('/sucursal-trabajador',[AdministradorController::class,'sucursalListaTrabajador'])->name('sucursal-trabajador');
 
 Route::post("/sucursal-agregar",[AdministradorController::class, 'agregarSucursal'])->name('sucursal-agregar');

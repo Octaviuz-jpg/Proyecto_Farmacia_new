@@ -8,7 +8,7 @@ use App\Models\Sucursal;
 use App\Models\Cargo;
 use App\Models\Personal;
 use App\Models\historial_cargos;
-use App\Models\historial_rotaciones;
+use App\Models\historial_rotacion;
 use App\Models\laboratorio;
 use App\Models\medicamento;
 use App\Models\pedido_proveedor;
@@ -43,36 +43,11 @@ class AdministradorController extends Controller
 
     }
 
-    #public function personalBorrar($id)
-    #{
-    #    // Encuentra al trabajador por su ID
-    #    $personal = Personal::findOrFail($id);
-
-    #    // Elimina al trabajador
-    #    $personal->delete();
-
-    #    // Redirige con un mensaje de éxito
-    #    return redirect()->back()->with('success', 'Trabajador eliminado correctamente.');
-    #}
-
     public function personalBorrar(Personal $personal) {
         $personal->delete();
         return back()->with('success', 'Registro eliminado');
     }
 
-    # public function personalAgregar(Request $request){
-    #     $personal = new Personal();
-
-    #     $personal->nombre = $request->nombre;
-    #     $personal->apellido = $request->apellido;
-    #     $personal->edad = $request->edad;
-    #     $personal->correo = $request->correo;
-    #     $personal->telefono = $request->telefono;
-
-    #     $personal->save();
-
-    #     return redirect('/personal');
-    # }
 
     public function personalAgregar(Request $request) {
         $request->validate([
@@ -99,8 +74,8 @@ class AdministradorController extends Controller
 
         // Registrar la sucursal
     $personal->sucursales()->attach($request->sucursal_id, [
-        'fecha_entrada' => \Carbon\Carbon::parse($request->fecha_entrada)
-            ->setTime(now()->hour, now()->minute, now()->second),
+            'fecha_entrada' => \Carbon\Carbon::parse($request->fecha_entrada)
+                ->setTime(now()->hour, now()->minute, now()->second),
         'fecha_salida' => null
     ]);
 
@@ -108,20 +83,51 @@ class AdministradorController extends Controller
     }
 
 
-    //public function sucursalListaTrabajador(Request $request)
-    //{
-    //    $sucursalId = $request->input('sucursal_id');
+    public function mostrarFormularioRotacion(Personal $personal)
+{
+    $sucursalActual = $personal->sucursales()
+        ->whereNull('historial_rotaciones.fecha_salida')
+        ->first();
 
-    //    // Consulta a la tabla intermedia para verificar `fecha_de_salida`
-    //    $trabajadores = Personal::whereHas('sucursales', function ($query) use ($sucursalId) {
-    //        $query->where('historial_rotaciones.sucursal_id', $sucursalId)
-    //            ->where('historial_rotaciones.fecha_salida', '0000-00-00 00:00:00'); // Busca "0000-00-00 00:00:00"
-    //    })->get();
+    $sucursales = Sucursal::where('sucursal_id', '!=', $sucursalActual->sucursal_id)->get();
+
+    return view('rotacion-form', compact('personal', 'sucursalActual', 'sucursales'));
+}
+
+public function rotarPersonal(Request $request, Personal $personal)
+{
+    $request->validate([
+        'fecha_salida' => 'required|date',
+        'sucursal_id' => 'required|exists:sucursal,sucursal_id',
+        'fecha_entrada' => 'required|date|after_or_equal:fecha_salida'
+    ]);
+
+        // Obtener el pivot actual para asegurar la correcta actualización
+        $pivotActual = $personal->sucursales()
+            ->where('historial_rotaciones.sucursal_id', $request->sucursal_actual_id)
+            ->whereNull('historial_rotaciones.fecha_salida')
+            ->first();
+
+        if (!$pivotActual) {
+            return back()->with('error', 'No se encontró la sucursal actual activa.');
+        }
+
+        // Actualizar fecha_salida del pivot actual
+        $pivotActual->pivot->update([
+            'fecha_salida' => \Carbon\Carbon::parse($request->fecha_salida)
+                ->setTime(now()->hour, now()->minute, now()->second)
+        ]);
 
 
-    //    // Retorna la vista con los trabajadores filtrados
-    //    return view('sucursaltrabajador', compact('trabajadores'));
-    //}
+        $personal->sucursales()->attach($request->sucursal_id, [
+            'fecha_entrada' => \Carbon\Carbon::parse($request->fecha_entrada)
+                ->setTime(now()->hour, now()->minute, now()->second),
+            'fecha_salida' => null
+
+        ]);
+
+    return redirect()->route('personal')->with('success', 'Rotación realizada exitosamente!');
+}
 
     public function sucursalListaTrabajador(Request $request)
 {
@@ -166,6 +172,7 @@ class AdministradorController extends Controller
 
         return view('laboratorios', compact('lab'));
     }
+
 
     public function agregarLaboratorios(Request $request){
 

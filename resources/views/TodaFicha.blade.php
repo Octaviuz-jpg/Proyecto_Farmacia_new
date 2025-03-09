@@ -48,6 +48,7 @@
                         <th><i class="fas fa-phone"></i> Teléfono</th>
                         <th><i class="fas fa-briefcase"></i> Cargo</th>
                         <th><i class="fas fa-exchange-alt"></i> Rotaciones</th>
+                        <th><i class="fas fa-cogs"></i> Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +76,13 @@
                             @else
                                 <span class="no-rotations">Sin rotaciones</span>
                             @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('rotacion.form', $trabajador->personal_id) }}"
+                               class="modern-button"
+                               title="Rotar de sucursal">
+                                <i class="fas fa-sync-alt"></i> Rotar
+                            </a>
                         </td>
                     </tr>
                     @endforeach
