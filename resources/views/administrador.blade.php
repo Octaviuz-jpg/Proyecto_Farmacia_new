@@ -73,6 +73,22 @@
                 <p>analista de compra</p>
             </a>
 
+            <a href="{{ route('compras-mostrar') }}" class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <h2>compras</h2>
+                <p>facturas y Administración de pagos </p>
+            </a>
+
+           <a href="{{ route('PDF-form') }}" class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <h2>PDF compras y pedidos</h2>
+                <p>digitalizacion de compras y pedidos </p>
+            </a>
+
             
         </div>
     </main>

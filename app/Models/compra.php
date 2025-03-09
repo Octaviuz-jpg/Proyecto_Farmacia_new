@@ -24,6 +24,7 @@ class compra extends Model
     protected $fillable = [
         'pedido_proveedor_id',
         'forma_pago',
+        'tiempo_llegada',
         'fecha_pago',
         'estado_pago'
     ];

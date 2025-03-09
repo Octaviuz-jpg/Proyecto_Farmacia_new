@@ -40,7 +40,7 @@ class pedido_proveedor extends Model
     }
 
     public function medicamentos(){
-        return $this->belongsTo(medicamento::class, 'medicamentos_id');
+        return $this->belongsTo(medicamento::class, 'medicamento_id');
     }
 
     public function compras(){

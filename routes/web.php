@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\analistaController;
+use App\Http\Controllers\comprasController;
 use App\Http\Controllers\controllermedicamento;
 use App\Http\Controllers\FichaController;
 use App\Http\Controllers\PersonalController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\pedidoController;
 use App\Models\analista;
+use App\Models\pedido_proveedor;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class);
@@ -67,4 +69,14 @@ Route::post('/pedido', [pedidoController::class, 'guardarPedido'])->name('pedido
 Route::get('/pedido-proveedor/{pedido_id}/crear', [pedidoController::class, 'crearPedidoProveedor'])->name('pedido_proveedor.crear');
 Route::post('/pedido-proveedor', [pedidoController::class, 'guardarPedidoProveedor'])->name('pedido_proveedor.guardar');
 
+Route::get('/compras-mostrar', [comprasController::class, 'comprasmostrar'])->name('compras-mostrar');
 
+Route::get('/comprasformulario',[comprasController::class, 'crearCompra'])->name('compra-formulario');
+
+Route::post('/comprasformulario-guardar',[comprasController::class, 'guardarCompra'])->name('compra-formulario-guardar');
+
+Route::get('/pedido-proveedor/pdf', [AdministradorController::class, 'generarPedidoProveedorPDF'])->name('pedido-proveedor.pdf');
+Route::get('/pdf-form', function () {
+     return view('pdfForm');
+ })->name('PDF-form');
+ 

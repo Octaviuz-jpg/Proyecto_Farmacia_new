@@ -11,8 +11,12 @@ use App\Models\historial_cargos;
 use App\Models\historial_rotaciones;
 use App\Models\laboratorio;
 use App\Models\medicamento;
+use App\Models\pedido_proveedor;
 use App\Models\stock;
 use App\Models\stock_medicamento;
+use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class AdministradorController extends Controller
 {
@@ -235,6 +239,25 @@ public function SucursalStock(Request $request)
 
     return view('sucursal-stock', compact('sucursal'));
 }
+
+
+
+public function generarPedidoProveedorPDF(Request $request)
+{
+          // Validar que el ID esté presente y sea válido
+    $request->validate([
+        'id' => 'required|integer|exists:pedido_proveedor,pedido_proveedor_id',
+    ]);
+    // Buscar el pedido_proveedor con sus compras asociadas
+    $pedidoProveedor = pedido_proveedor::with('compras','medicamentos','laboratorios')->findOrFail($request->id);
+
+    // Renderizar la vista y generar el PDF
+    $pdf = FacadePdf::loadView('PDFcompras_pedidos', compact('pedidoProveedor'));
+
+    // Descargar el archivo PDF
+    return $pdf->download('pedido_proveedor_' . $pedidoProveedor->id . '_compras.pdf');
+}
+
 
 
 
