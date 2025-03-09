@@ -32,7 +32,7 @@ return [
     |
     */
 
-    'lifetime' => (int) env('SESSION_LIFETIME', 120),
+    'lifetime' => (int) env('SESSION_LIFETIME', 200),
 
     'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
 
@@ -115,6 +115,8 @@ return [
     */
 
     'lottery' => [2, 100],
+    'same_site' => 'lax',
+
 
     /*
     |--------------------------------------------------------------------------

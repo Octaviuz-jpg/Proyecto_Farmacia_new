@@ -64,6 +64,16 @@
                 <h2>Stock por Sucursal</h2>
                 <p>Consulta y gestiona inventarios</p>
             </a>
+
+            <a href="{{ route('analistas') }}" class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <h2>analistas</h2>
+                <p>analista de compra</p>
+            </a>
+
+            
         </div>
     </main>
 </body>

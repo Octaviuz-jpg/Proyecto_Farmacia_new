@@ -98,16 +98,8 @@
 
     </div>
 
-    <!-- Formulario para buscar stock por ID de la sucursal -->
-    <div class="form-container">
-        <h2>Buscar Stock por Sucursal</h2>
-        <form action="{{ route('buscar-stock-sucursal') }}" method="POST">
-            @csrf <!-- Protección CSRF de Laravel -->
-            <label for="sucursal_id">ID de la Sucursal</label>
-            <input type="number" id="sucursal_id" name="sucursal_id" placeholder="Ingrese el ID de la sucursal" required>
-            <button type="submit">Buscar Stock</button>
-        </form>
-    </div>
+    
+   
     </table>
 
     <form

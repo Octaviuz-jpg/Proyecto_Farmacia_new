@@ -219,6 +219,23 @@ public function buscarMedicamento(Request $request)
 
 }
 
+public function SucursalStock(Request $request)
+{
+    $request->validate([
+        'sucursal_id' => 'required|integer',
+    ]);
+
+    // Carga la sucursal con su stock y medicamentos
+    $sucursal = Sucursal::with('stock.medicamentos')->find($request->input('sucursal_id'));
+
+    // Validar si la sucursal existe y tiene un stock asociado
+    if (!$sucursal || !$sucursal->stock) {
+        return back()->with('error', 'La sucursal no tiene un stock asociado o no existe.');
+    }
+
+    return view('sucursal-stock', compact('sucursal'));
+}
+
 
 
 

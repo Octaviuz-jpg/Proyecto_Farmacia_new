@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use illuminate\Database\Eloquent\Relations\Pivot;
 
-class historial_rotacion extends Model
+class historial_rotacion extends Pivot
 {
      // Definir la tabla asociada al modelo
      protected $table = 'historial_rotaciones';

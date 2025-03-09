@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdministradorController;
+use App\Http\Controllers\analistaController;
 use App\Http\Controllers\controllermedicamento;
 use App\Http\Controllers\FichaController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\pedidoController;
+use App\Models\analista;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class);
@@ -47,4 +50,21 @@ Route::delete('/laboratorio-eliminar', [AdministradorController::class, 'elimina
 
 Route::get('/stock-medicamentos',[AdministradorController::class, 'stockMedicamentos'])->name('stock-medicamentos');
 Route::post('/buscar-medicamento', [AdministradorController::class, 'buscarMedicamento'])->name('buscar-medicamento');
-Route::post('/buscar-stock-sucursal', [AdministradorController::class, 'buscarStockSucursal'])->name('buscar-stock-sucursal');
+Route::post('/buscar-stock-sucursal', [AdministradorController::class, 'Sucursalstock'])->name('buscar-stock-sucursal');
+Route::get('/analistas', [analistaController::class, 'mostrarAnalista'])->name('analistas');
+
+Route::post('/agregar-analista', [analistaController::class, 'agregarAnalista'])->name('agregar.analista');
+
+Route::get('/pedidos-proveedor', [analistaController::class, 'mostrarPedidos'])->name('pedidos-proveedor');
+
+Route::get('/pedido-formulario', [pedidoController::class, 'crearPedido'])->name('pedido-formulario');
+
+// Rutas para tabla Pedido
+// Route::get('/pedido/crear', [pedidoController::class, 'crearPedido'])->name('pedido-formulario');
+Route::post('/pedido', [pedidoController::class, 'guardarPedido'])->name('pedido.guardar');
+
+// Rutas para tabla PedidoProveedor
+Route::get('/pedido-proveedor/{pedido_id}/crear', [pedidoController::class, 'crearPedidoProveedor'])->name('pedido_proveedor.crear');
+Route::post('/pedido-proveedor', [pedidoController::class, 'guardarPedidoProveedor'])->name('pedido_proveedor.guardar');
+
+
