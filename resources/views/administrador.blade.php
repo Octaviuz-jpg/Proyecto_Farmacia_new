@@ -89,7 +89,16 @@
                 <p>digitalizacion de compras y pedidos </p>
             </a>
 
-            
+
+            <a href="/ingreso-personal" class="dashboard-card">
+                 <div class="card-icon">
+                     <i class="fas fa-warehouse"></i>
+                 </div>
+                 <h2>Ingreso Perosnal</h2>
+                 <p>Ingreso Personal</p>
+             </a>
+
+
         </div>
     </main>
 </body>
