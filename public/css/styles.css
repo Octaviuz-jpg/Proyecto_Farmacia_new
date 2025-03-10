@@ -10,7 +10,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 body {
@@ -209,4 +209,20 @@ footer {
     .footer-section a {
         justify-content: center;
     }
+}
+
+/* Boton Sucursal */
+.btn-sucursal {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
 }

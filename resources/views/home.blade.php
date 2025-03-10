@@ -12,7 +12,7 @@
     <header>
         <div class="header-content">
             <div class="logo">
-                <img src="logo.png" alt="Logo de la Farmacia">
+                <img src="{{asset('/images/home/logo.jpeg')}}" alt="Logo de la Farmacia">
             </div>
 
             <div class="search-bar">
