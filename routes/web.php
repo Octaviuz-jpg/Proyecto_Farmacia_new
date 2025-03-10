@@ -193,3 +193,7 @@ Route::get("/registro-personal", [
 Route::post("/ingreso", [IngresopersonalController::class, "store"])->name(
     "ingreso.store"
 );
+
+
+Route::get('/busqueda', 
+[StockMedicamentosController::class, 'buscar'])->name('stock.buscar');

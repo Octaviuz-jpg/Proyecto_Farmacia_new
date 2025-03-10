@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\stock_medicamento;
 use Illuminate\Support\Facades\DB;
 
 class StockMedicamentosController extends Controller
@@ -18,6 +19,28 @@ class StockMedicamentosController extends Controller
             'data' => $stock
         ]);
     }
+    public function buscar(Request $request)
+    {
+        // Validar la entrada
+        $request->validate([
+            'q' => 'required|string|max:255',
+        ]);
+    
+        // Obtener el término de búsqueda
+        $query = $request->input('q');
+    
+        // Realizar la consulta con un JOIN en las tablas stock_medicamento y medicamentos
+        $resultados = DB::table('stock_medicamento')
+            ->join('medicamentos', 'stock_medicamento.medicamento_id', '=', 'medicamentos.medicamentos_id') // Unir las tablas
+            ->where('medicamentos.nombre', 'like', '%' . $query . '%') // Buscar coincidencias por el nombre del medicamento
+            ->select('stock_medicamento.*', 'medicamentos.nombre as nombre_medicamento') // Seleccionar campos deseados
+            ->get();
+    
+        // Retornar los resultados a la vista
+        return view('busqueda_medicamento', compact('resultados', 'query'));
+    }
+    
+    
      public function obtenerSucursales()
     {
         // Obtén todas las sucursales con sus id y ubicación

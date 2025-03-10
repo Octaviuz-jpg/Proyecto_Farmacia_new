@@ -16,7 +16,7 @@
             </div>
 
             <div class="search-bar">
-                <form action="/buscar" method="GET">
+                <form action="{{ route('stock.buscar') }}" method="get">
                     <div class="search-container">
                         <input type="text" placeholder="Buscar medicamentos, productos..." name="q">
                         <button type="submit">
@@ -25,7 +25,7 @@
                     </div>
                 </form>
             </div>
-
+            
             <button class="btn-sucursal" onclick="window.location.href='stockporsucursal';">Sucursal</button>
 
             <div class="login">

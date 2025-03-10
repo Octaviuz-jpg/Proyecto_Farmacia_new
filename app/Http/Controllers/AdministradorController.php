@@ -213,6 +213,11 @@ public function rotarPersonal(Request $request, Personal $personal)
 public function stockMedicamentos()
 {
     $stockMedicamentos = stock_medicamento::with('stock.sucursal', 'medicamento')->get();
+    return view('busqueda_medicamento', compact('stockMedicamentos'));
+}
+public function Buscar_medicamento()
+{
+    $stockMedicamentos = stock_medicamento::with('stock.sucursal', 'medicamento')->get();
     return view('stockmedicamentos', compact('stockMedicamentos'));
 }
 
